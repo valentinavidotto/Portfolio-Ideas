@@ -37,17 +37,17 @@
     </div>
 
     <div class="stat-grid">
-      <div class="stat-card" id="stat-spread">
+      <div class="stat-card">
         <div class="stat-label">10Y–2Y spread</div>
         <div class="stat-value" id="val-spread">—</div>
         <div class="stat-delta" id="delta-spread"></div>
       </div>
-      <div class="stat-card" id="stat-cpi">
+      <div class="stat-card">
         <div class="stat-label">US CPI (YoY)</div>
         <div class="stat-value" id="val-cpi">—</div>
         <div class="stat-delta" id="delta-cpi"></div>
       </div>
-      <div class="stat-card" id="stat-brent">
+      <div class="stat-card">
         <div class="stat-label">Brent crude</div>
         <div class="stat-value" id="val-brent">—</div>
         <div class="stat-delta" id="delta-brent"></div>
@@ -63,7 +63,7 @@
         </div>
         <div class="chart-body">
           <div class="chart-loading" id="load-spread">Fetching from FRED…</div>
-          <canvas id="chart-spread" style="display:none"></canvas>
+          <canvas id="chart-spread" style="display:none;height:160px"></canvas>
         </div>
       </div>
 
@@ -74,7 +74,7 @@
         </div>
         <div class="chart-body">
           <div class="chart-loading" id="load-brent">Enter API key above to load.</div>
-          <canvas id="chart-brent" style="display:none"></canvas>
+          <canvas id="chart-brent" style="display:none;height:140px"></canvas>
         </div>
       </div>
 
@@ -85,7 +85,7 @@
         </div>
         <div class="chart-body">
           <div class="chart-loading" id="load-cpi">Fetching from FRED…</div>
-          <canvas id="chart-cpi" style="display:none"></canvas>
+          <canvas id="chart-cpi" style="display:none;height:140px"></canvas>
         </div>
       </div>
 
