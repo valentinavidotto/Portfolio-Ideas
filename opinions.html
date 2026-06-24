@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Opinions — Valentina Vidotto</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <a class="nav-name" href="index.html">Valentina Vidotto</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="macro.html">Macro view</a>
+      <a href="opinions.html" class="active">Opinions</a>
+      <a href="projects.html">Projects</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Opinions</h1>
+      <p class="page-sub">Analysis and commentary on public policy, markets, and global trends. Also on <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a>.</p>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="policy">Policy</button>
+      <button class="filter-btn" data-filter="market">Market</button>
+      <button class="filter-btn" data-filter="ideas">Ideas</button>
+    </div>
+
+    <div class="blog-list" id="blog-list">
+
+      <article class="blog-item" data-tag="policy">
+        <div class="blog-main">
+          <span class="tag tag-policy">Policy</span>
+          <h2 class="blog-title">A historical act: the single universal allowance in Italy</h2>
+          <p class="blog-excerpt">Unpacking Italy's landmark welfare reform — its scope, political significance, and what it signals for European social policy.</p>
+          <div class="blog-meta">
+            <span class="blog-date">April 2022</span>
+            <span class="blog-venue">LSE Social Policy Blog</span>
+          </div>
+        </div>
+        <a class="blog-arrow" href="https://blogs.lse.ac.uk/socialpolicy/2022/04/08/a-historical-act-the-single-universal-allowance-in-italy/" target="_blank" rel="noopener" aria-label="Read article">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+      </article>
+
+      <article class="blog-item" data-tag="market">
+        <div class="blog-main">
+          <span class="tag tag-market">Market</span>
+          <h2 class="blog-title">Sovereign risk in an era of fiscal divergence</h2>
+          <p class="blog-excerpt">How widening spreads reflect deeper structural shifts across EMEA sovereign credit — and what institutional investors should watch.</p>
+          <div class="blog-meta">
+            <span class="blog-date">2024</span>
+            <span class="blog-venue">The Currency of Change</span>
+          </div>
+        </div>
+        <a class="blog-arrow" href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener" aria-label="Read article">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+      </article>
+
+      <article class="blog-item" data-tag="ideas">
+        <div class="blog-main">
+          <span class="tag tag-ideas">Ideas</span>
+          <h2 class="blog-title">The currency of change</h2>
+          <p class="blog-excerpt">Flagship newsletter exploring the intersection of policy, capital markets, and the ideas shaping tomorrow's economy and society.</p>
+          <div class="blog-meta">
+            <span class="blog-date">Ongoing</span>
+            <span class="blog-venue">Substack · Spotify</span>
+          </div>
+        </div>
+        <a class="blog-arrow" href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener" aria-label="Read on Substack">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
+        </a>
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2025 Valentina Vidotto</span>
+    <div class="footer-links">
+      <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a>
+      <a href="https://www.linkedin.com/in/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/opinions.js"></script>
+</body>
+</html>

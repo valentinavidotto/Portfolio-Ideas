@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macro View — Valentina Vidotto</title>
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <a class="nav-name" href="index.html">Valentina Vidotto</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="macro.html" class="active">Macro view</a>
+      <a href="opinions.html">Opinions</a>
+      <a href="projects.html">Projects</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="page-header">
+      <h1 class="page-title">Macro view</h1>
+      <p class="page-sub">Live data updated automatically. <span id="last-updated" class="muted"></span></p>
+    </div>
+
+    <div class="api-key-bar" id="api-key-bar">
+      <label for="av-key">Alpha Vantage key for Brent crude:</label>
+      <input type="text" id="av-key" placeholder="Paste your API key…" />
+      <button id="av-save">Save &amp; load</button>
+      <a href="https://www.alphavantage.co/support/#api-key" target="_blank" rel="noopener" class="key-help">Get a free key ↗</a>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card" id="stat-spread">
+        <div class="stat-label">10Y–2Y spread</div>
+        <div class="stat-value" id="val-spread">—</div>
+        <div class="stat-delta" id="delta-spread"></div>
+      </div>
+      <div class="stat-card" id="stat-cpi">
+        <div class="stat-label">US CPI (YoY)</div>
+        <div class="stat-value" id="val-cpi">—</div>
+        <div class="stat-delta" id="delta-cpi"></div>
+      </div>
+      <div class="stat-card" id="stat-brent">
+        <div class="stat-label">Brent crude</div>
+        <div class="stat-value" id="val-brent">—</div>
+        <div class="stat-delta" id="delta-brent"></div>
+      </div>
+    </div>
+
+    <div class="dashboard">
+
+      <div class="chart-card span2">
+        <div class="chart-head">
+          <span class="chart-title">T-curve — 10Y minus 2Y yield spread</span>
+          <span class="source-badge live">FRED</span>
+        </div>
+        <div class="chart-body">
+          <div class="chart-loading" id="load-spread">Fetching from FRED…</div>
+          <canvas id="chart-spread" style="display:none"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <span class="chart-title">Brent crude (USD/barrel)</span>
+          <span class="source-badge live">Alpha Vantage</span>
+        </div>
+        <div class="chart-body">
+          <div class="chart-loading" id="load-brent">Enter API key above to load.</div>
+          <canvas id="chart-brent" style="display:none"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-head">
+          <span class="chart-title">US CPI</span>
+          <span class="source-badge live">FRED</span>
+        </div>
+        <div class="chart-body">
+          <div class="chart-loading" id="load-cpi">Fetching from FRED…</div>
+          <canvas id="chart-cpi" style="display:none"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card map-card">
+        <div class="chart-head">
+          <span class="chart-title">Inflation — world map</span>
+          <span class="source-badge api">World Bank</span>
+        </div>
+        <div class="chart-body map-body">
+          <div class="chart-loading" id="load-inf-map">Building map…</div>
+          <div id="map-inflation" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="chart-card map-card">
+        <div class="chart-head">
+          <span class="chart-title">GDP growth — world map</span>
+          <span class="source-badge api">World Bank</span>
+        </div>
+        <div class="chart-body map-body">
+          <div class="chart-loading" id="load-gdp-map">Building map…</div>
+          <div id="map-gdp" style="display:none"></div>
+        </div>
+      </div>
+
+      <div class="chart-card map-card span2">
+        <div class="chart-head">
+          <span class="chart-title">Unemployment — world map</span>
+          <span class="source-badge api">World Bank</span>
+        </div>
+        <div class="chart-body map-body">
+          <div class="chart-loading" id="load-unemp-map">Building map…</div>
+          <div id="map-unemployment" style="display:none"></div>
+        </div>
+      </div>
+
+    </div>
+
+    <p class="data-note">Data sources: <a href="https://fred.stlouisfed.org" target="_blank" rel="noopener">FRED</a> (Federal Reserve), <a href="https://www.alphavantage.co" target="_blank" rel="noopener">Alpha Vantage</a>, <a href="https://data.worldbank.org" target="_blank" rel="noopener">World Bank Open Data</a>. All free APIs, no affiliation.</p>
+  </main>
+
+  <footer class="footer">
+    <span>© 2025 Valentina Vidotto</span>
+    <div class="footer-links">
+      <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a>
+      <a href="https://www.linkedin.com/in/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson.min.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/macro.js"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentina Vidotto</title>
+  <meta name="description" content="Professional with experience in public policy, sovereign risk, and capital markets across EMEA." />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <a class="nav-name" href="index.html">Valentina Vidotto</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="macro.html">Macro view</a>
+      <a href="opinions.html">Opinions</a>
+      <a href="projects.html">Projects</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">Policy · Market · Ideas</p>
+        <h1>Reading the signals<br>shaping tomorrow.</h1>
+        <p class="bio">Professional with experience in public policy, sovereign risk, and capital markets, combined with a proven track record in institutional client coverage and business development across EMEA.</p>
+        <p class="bio">Storyteller sharing trends that matter on <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a> and Spotify.</p>
+        <div class="pill-row">
+          <a class="pill" href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18"/></svg>
+            Substack
+          </a>
+          <a class="pill" href="#" target="_blank" rel="noopener">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>
+            Spotify
+          </a>
+        </div>
+      </div>
+      <div class="hero-photo">
+        <img src="assets/img/photo.jpg" alt="Valentina Vidotto" style="width:100%;border-radius:10px;object-fit:cover;" />
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <p class="section-label">Get in touch</p>
+      <form class="contact-form" id="contact-form" novalidate>
+        <div class="form-row">
+          <div class="field">
+            <label for="fname">First name</label>
+            <input type="text" id="fname" name="fname" autocomplete="given-name" required />
+          </div>
+          <div class="field">
+            <label for="lname">Last name</label>
+            <input type="text" id="lname" name="lname" autocomplete="family-name" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary">Send message</button>
+        <p class="form-status" id="form-status" aria-live="polite"></p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 2025 Valentina Vidotto</span>
+    <div class="footer-links">
+      <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a>
+      <a href="https://www.linkedin.com/in/" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/contact.js"></script>
+</body>
+</html>
