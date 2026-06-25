@@ -16,7 +16,7 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
       <span></span><span></span><span></span>
     </button>
-        <div class="nav-links" id="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="macro.html" class="active">Macro Dashboard</a>
       <a href="research/geopolitical-risk.html">Geopolitical Risk</a>
       <a href="opinions.html">Opinions</a>
@@ -28,20 +28,6 @@
     <div class="page-header">
       <h1 class="page-title">Macro Dashboard</h1>
       <p class="page-sub">Reference macro dataset for market view. <span id="last-updated" class="muted"></span></p>
-    </div>
-
-    <div class="api-key-bar">
-      <label for="fred-key">FRED key (yield spread &amp; CPI):</label>
-      <input type="text" id="fred-key" placeholder="Paste free FRED API key…" />
-      <button id="fred-save">Save &amp; load</button>
-      <a href="https://fred.stlouisfed.org/docs/api/api_key.html" target="_blank" rel="noopener" class="key-help">Get free key ↗</a>
-    </div>
-
-    <div class="api-key-bar">
-      <label for="av-key">Alpha Vantage key (Brent crude):</label>
-      <input type="text" id="av-key" placeholder="Paste free Alpha Vantage key…" />
-      <button id="av-save">Save &amp; load</button>
-      <a href="https://www.alphavantage.co/support/#api-key" target="_blank" rel="noopener" class="key-help">Get free key ↗</a>
     </div>
 
     <div class="stat-grid">
@@ -70,7 +56,7 @@
           <span class="source-badge live">FRED</span>
         </div>
         <div class="chart-body">
-          <div class="chart-loading" id="load-spread">Enter your FRED API key above to load.</div>
+          <div class="chart-loading" id="load-spread">Loading…</div>
           <canvas id="chart-spread" style="display:none;height:160px"></canvas>
         </div>
       </div>
@@ -81,7 +67,7 @@
           <span class="source-badge live">Alpha Vantage</span>
         </div>
         <div class="chart-body">
-          <div class="chart-loading" id="load-brent">Enter Alpha Vantage key above to load.</div>
+          <div class="chart-loading" id="load-brent">Loading…</div>
           <canvas id="chart-brent" style="display:none;height:140px"></canvas>
         </div>
       </div>
@@ -92,7 +78,7 @@
           <span class="source-badge live">FRED</span>
         </div>
         <div class="chart-body">
-          <div class="chart-loading" id="load-cpi">Enter your FRED API key above to load.</div>
+          <div class="chart-loading" id="load-cpi">Loading…</div>
           <canvas id="chart-cpi" style="display:none;height:140px"></canvas>
         </div>
       </div>
@@ -136,10 +122,10 @@
   </main>
 
   <footer class="footer">
-    <span>© 2025 Valentina Vidotto</span>
+    <span>© 2026 Valentina Vidotto</span>
     <div class="footer-links">
       <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a>
-      <a href="https://www.linkedin.com/in/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/valentina-vidotto" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>
 
