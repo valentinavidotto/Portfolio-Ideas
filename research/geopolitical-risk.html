@@ -1,1 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Geopolitical Risk — Valentina Vidotto</title>
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --mono:'IBM Plex Mono',monospace; }
 
+    /* ── Hero ── */
+    .gr-hero { border-bottom:0.5px solid var(--border); padding-bottom:2rem; margin-bottom:2rem; }
+    .gr-eyebrow { font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-3); margin-bottom:0.6rem; font-family:var(--mono); }
+    .gr-title { font-size:24px; font-weight:500; line-height:1.25; margin-bottom:0.75rem; }
+    .gr-sub { font-size:13px; color:var(--text-2); max-width:600px; line-height:1.7; margin-bottom:1.25rem; }
+    .gr-pills { display:flex; gap:8px; flex-wrap:wrap; }
+    .gr-pill { font-size:11px; font-family:var(--mono); padding:3px 10px; border:0.5px solid var(--border-2); border-radius:999px; color:var(--text-3); }
+
+    /* ── Tabs ── */
+    .gr-tabs { display:flex; gap:0; border:0.5px solid var(--border-2); border-radius:var(--radius-sm); overflow:hidden; margin-bottom:1.25rem; width:fit-content; }
+    .gr-tab { font-family:var(--sans); font-size:12px; font-weight:500; padding:8px 20px; border:none; background:var(--bg); color:var(--text-2); cursor:pointer; transition:background 0.15s,color 0.15s; border-right:0.5px solid var(--border-2); }
+    .gr-tab:last-child { border-right:none; }
+    .gr-tab.active { background:var(--text); color:#fff; }
+    .gr-tab:hover:not(.active) { background:var(--bg-2); color:var(--text); }
+
+    /* ── Controls ── */
+    .gr-controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:1rem; }
+    .gr-search { font-family:var(--sans); font-size:12px; padding:6px 12px; border:0.5px solid var(--border-2); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); width:180px; }
+    .gr-search:focus { outline:none; border-color:var(--blue); }
+    .gr-select { font-family:var(--sans); font-size:12px; padding:6px 10px; border:0.5px solid var(--border-2); border-radius:var(--radius-sm); background:var(--bg); color:var(--text); cursor:pointer; }
+    .gr-count { font-size:11px; color:var(--text-3); margin-left:auto; font-family:var(--mono); }
+    .view-toggle { display:flex; gap:4px; }
+    .view-btn { width:28px; height:28px; display:flex; align-items:center; justify-content:center; border:0.5px solid var(--border-2); border-radius:var(--radius-sm); background:var(--bg); cursor:pointer; color:var(--text-3); font-size:13px; }
+    .view-btn.active { background:var(--text); color:#fff; border-color:var(--text); }
+
+    /* ── Table ── */
+    .gr-table-wrap { overflow-x:auto; border:0.5px solid var(--border); border-radius:var(--radius); }
+    .gr-table { width:100%; border-collapse:collapse; font-size:12px; }
+    .gr-table th { padding:8px 12px; text-align:left; font-size:10px; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-3); background:var(--bg-2); border-bottom:0.5px solid var(--border); white-space:nowrap; cursor:pointer; user-select:none; }
+    .gr-table th:hover { color:var(--text); }
+    .gr-table th.sorted { color:var(--text); }
+    .gr-table td { padding:9px 12px; border-bottom:0.5px solid var(--border); vertical-align:middle; }
+    .gr-table tr:last-child td { border-bottom:none; }
+    .gr-table tr:hover td { background:var(--bg-2); cursor:pointer; }
+    .country-cell { display:flex; align-items:center; gap:8px; }
+    .c-flag { font-size:16px; }
+    .c-name { font-weight:500; }
+    .region-badge { font-size:10px; padding:1px 6px; border-radius:999px; background:var(--bg-3); color:var(--text-3); white-space:nowrap; }
+
+    /* ── Score bar ── */
+    .score-cell { display:flex; align-items:center; gap:6px; min-width:100px; }
+    .score-bar-wrap { flex:1; height:4px; background:var(--bg-3); border-radius:2px; overflow:hidden; }
+    .score-bar { height:100%; border-radius:2px; }
+    .score-num { font-family:var(--mono); font-size:11px; font-weight:500; width:34px; text-align:right; }
+
+    /* ── Risk badge ── */
+    .risk-badge { font-size:10px; font-weight:500; padding:2px 8px; border-radius:999px; white-space:nowrap; }
+    .r-Critical { background:#FDECEA; color:#8B1A1A; }
+    .r-Elevated  { background:#FDECEA; color:#C0392B; }
+    .r-High      { background:#FEF0E7; color:#D35400; }
+    .r-Moderate  { background:#FEF9E7; color:#B7950B; }
+    .r-Low       { background:#E9F7EF; color:#1D6A3A; }
+    .r-Very-Low  { background:#E9F7EF; color:#145A32; }
+
+    /* ── Card grid ── */
+    .gr-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .gr-card { border:0.5px solid var(--border); border-radius:var(--radius); padding:14px; background:#FAFAF8; cursor:pointer; transition:border-color 0.15s,box-shadow 0.15s; }
+    .gr-card:hover { border-color:var(--border-2); box-shadow:0 2px 10px rgba(0,0,0,0.07); }
+    .gr-card-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; }
+    .gr-card-country { font-size:13px; font-weight:500; }
+    .gr-card-region { font-size:10px; color:var(--text-3); margin-top:2px; }
+    .gr-card-score { font-family:var(--mono); font-size:20px; font-weight:500; line-height:1; }
+    .gr-card-bars { display:flex; flex-direction:column; gap:5px; margin-top:10px; }
+    .pillar-row { display:flex; align-items:center; gap:5px; }
+    .pillar-label { font-size:10px; color:var(--text-3); width:90px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .pillar-bar-wrap { flex:1; height:3px; background:var(--bg-3); border-radius:2px; overflow:hidden; }
+    .pillar-bar { height:100%; border-radius:2px; }
+    .pillar-val { font-family:var(--mono); font-size:10px; color:var(--text-3); width:22px; text-align:right; }
+
+    /* ── Drawer ── */
+    .gr-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.28); z-index:200; backdrop-filter:blur(2px); }
+    .gr-overlay.open { display:block; }
+    .gr-drawer { position:fixed; top:0; right:0; bottom:0; width:380px; background:var(--bg); border-left:0.5px solid var(--border-2); z-index:201; overflow-y:auto; transform:translateX(100%); transition:transform 0.25s ease; padding:2rem 1.5rem; }
+    .gr-drawer.open { transform:translateX(0); }
+    .dr-close { position:absolute; top:1rem; right:1rem; background:none; border:none; cursor:pointer; font-size:18px; color:var(--text-3); width:28px; height:28px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius-sm); }
+    .dr-close:hover { background:var(--bg-2); color:var(--text); }
+    .dr-country { font-size:20px; font-weight:500; margin-bottom:4px; }
+    .dr-region { font-size:12px; color:var(--text-3); margin-bottom:1.25rem; }
+    .dr-score-row { display:flex; gap:10px; margin-bottom:1.5rem; }
+    .dr-box { flex:1; background:var(--bg-2); border-radius:var(--radius-sm); padding:10px 12px; text-align:center; }
+    .dr-box-label { font-size:10px; text-transform:uppercase; letter-spacing:0.07em; color:var(--text-3); margin-bottom:4px; font-family:var(--mono); }
+    .dr-box-val { font-size:22px; font-weight:500; font-family:var(--mono); }
+    .dr-section { margin-bottom:1.25rem; }
+    .dr-section-title { font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-3); margin-bottom:10px; font-family:var(--mono); }
+    .dr-pillar { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .dr-pillar-name { font-size:12px; width:140px; flex-shrink:0; color:var(--text-2); }
+    .dr-pillar-bar-wrap { flex:1; height:5px; background:var(--bg-3); border-radius:3px; overflow:hidden; }
+    .dr-pillar-bar { height:100%; border-radius:3px; }
+    .dr-pillar-val { font-family:var(--mono); font-size:11px; font-weight:500; width:28px; text-align:right; }
+    .dr-inputs { margin-top:0.5rem; display:flex; flex-direction:column; gap:6px; }
+    .dr-input-row { display:flex; justify-content:space-between; font-size:11px; padding:5px 8px; background:var(--bg-2); border-radius:var(--radius-sm); }
+    .dr-input-label { color:var(--text-3); }
+    .dr-input-val { font-family:var(--mono); font-weight:500; }
+
+    /* ── Methodology ── */
+    .gr-method { margin-top:2rem; padding:1.25rem 1.5rem; background:var(--bg-2); border-radius:var(--radius); border:0.5px solid var(--border); }
+    .gr-method h3 { font-size:13px; font-weight:500; margin-bottom:0.5rem; }
+    .gr-method p { font-size:12px; color:var(--text-2); line-height:1.7; margin-bottom:0.5rem; }
+    .gr-method p:last-child { margin-bottom:0; color:var(--text-3); font-style:italic; }
+
+    .hidden { display:none !important; }
+    @media (max-width:600px) {
+      .gr-cards { grid-template-columns:1fr 1fr; }
+      .gr-drawer { width:100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <a class="nav-name" href="../index.html">Valentina Vidotto</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">
+      <a href="../macro.html">Macro view</a>
+      <a href="../opinions.html">Opinions</a>
+      <a href="../projects.html" class="active">Projects</a>
+    </div>
+  </nav>
+
+  <main class="main" style="max-width:940px">
+
+    <a href="../projects.html" class="back-link">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Projects
+    </a>
+
+    <div class="gr-hero">
+      <p class="gr-eyebrow">Goldman Sachs · Sovereign, Economic &amp; Geopolitical Risk Group · 2024–2025</p>
+      <h1 class="gr-title">Geopolitical Risk Scorecards</h1>
+      <p class="gr-sub">Two independent frameworks for assessing sovereign transfer and convertibility risk — a LASSO logistic regression model for capital controls tightening risk across 15 emerging markets, and a dual-model weighted scorecard for US sanctions risk across 157 countries. Both deliver forward-looking, 12-month probability estimates designed for institutional client use.</p>
+      <div class="gr-pills">
+        <span class="gr-pill">LASSO logit · L1 regularisation</span>
+        <span class="gr-pill">157 countries · sanctions</span>
+        <span class="gr-pill">15 EMs · capital controls</span>
+        <span class="gr-pill">OOS AUC 0.882</span>
+        <span class="gr-pill">2026 vintage</span>
+      </div>
+    </div>
+
+    <div class="gr-tabs">
+      <button class="gr-tab active" data-tab="cc">Capital Controls</button>
+      <button class="gr-tab" data-tab="sc">Sanctions Risk</button>
+    </div>
+
+    <div class="gr-controls">
+      <input class="gr-search" type="text" id="gr-search" placeholder="Search country…" />
+      <select class="gr-select" id="gr-region">
+        <option value="">All regions</option>
+      </select>
+      <select class="gr-select" id="gr-rating">
+        <option value="">All ratings</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-table" title="Table view">≡</button>
+        <button class="view-btn" id="btn-grid" title="Grid view">⊞</button>
+      </div>
+      <span class="gr-count" id="gr-count"></span>
+    </div>
+
+    <div id="table-view">
+      <div class="gr-table-wrap">
+        <table class="gr-table">
+          <thead><tr id="gr-thead"></tr></thead>
+          <tbody id="gr-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="grid-view" class="hidden">
+      <div class="gr-cards" id="gr-cards"></div>
+    </div>
+
+    <div class="gr-method" id="gr-method"></div>
+
+  </main>
+
+  <!-- Drawer -->
+  <div class="gr-overlay" id="gr-overlay"></div>
+  <div class="gr-drawer" id="gr-drawer">
+    <button class="dr-close" id="dr-close">✕</button>
+    <div id="dr-content"></div>
+  </div>
+
+  <footer class="footer">
+    <span>© 2026 Valentina Vidotto</span>
+    <div class="footer-links">
+      <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a>
+      <a href="https://www.linkedin.com/in/valentina-vidotto" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script src="../assets/js/nav.js"></script>
+  <script src="scorecard-data.js"></script>
+  <script>
+  (function(){
+    var tab='cc', view='table', sortCol='score', sortDir=-1;
+    var search='', region='', rating='';
+
+    var METHODS = {
+      cc: '<h3>Capital Controls Model</h3>'
+        + '<p><strong>Dependent variable:</strong> PFBA binary tightening flag at t+1 — equals 1 if at least one new capital-control tightening measure occurs in calendar year 2026.</p>'
+        + '<p><strong>Model:</strong> Two-step LASSO logistic regression (C=0.5, liblinear) on a panel of 17 emerging markets, 2001–2014. Median imputation and standard-scaling fit on training data only. 22 of 37 candidate features retained after L1 regularisation across six channels: global liquidity, external vulnerability, monetary &amp; real activity, institutions &amp; governance, regional contagion, and governance regime.</p>'
+        + '<p><strong>Validation:</strong> Stacked out-of-sample AUC = 0.882. 95% country-clustered AUC CI = [0.659, 0.970]. Probabilities are Platt-recalibrated. Use rank, not absolute probability, for client communication.</p>',
+      sc: '<h3>Sanctions Risk Model</h3>'
+        + '<p><strong>Coverage:</strong> 157 countries scored on US sanctions risk using a dual-model framework — M1 (≥3 sanctions events, more restrictive sample) and M2 (≥1 event, broader). M2 weights displayed by default.</p>'
+        + '<p><strong>Variables:</strong> Five dimensions — Troop alignment (US DoD/GlobalSecurity), Trade alignment (CEPII/UN Comtrade), Liberal democracy (V-Dem v14), Economic complexity (Harvard Growth Lab OEC), and PTS political terror score. Logistic regression coefficients empirically calibrated against 2023 OFAC, EU, and UN sanctions events.</p>'
+        + '<p><strong>Score:</strong> 0–100 weighted index. Critical ≥70 · High 55–69 · Elevated 40–54 · Moderate 25–39 · Low &lt;25. Currently sanctioned countries flagged separately in raw data.</p>'
+    };
+
+    function getData(){
+      var d = tab==='cc' ? CC_DATA : SC_DATA;
+      if(search){ var s=search.toLowerCase(); d=d.filter(function(x){return x.country.toLowerCase().includes(s);}); }
+      if(region) d=d.filter(function(x){return x.region===region;});
+      if(rating) d=d.filter(function(x){return x.rating===rating;});
+      d=d.slice().sort(function(a,b){
+        var av,bv;
+        if(sortCol==='country'){av=a.country;bv=b.country;}
+        else if(sortCol==='score'){av=tab==='cc'?a.prob:a.score;bv=tab==='cc'?b.prob:b.score;}
+        else {av=a.pillars[sortCol]||0;bv=b.pillars[sortCol]||0;}
+        if(av<bv)return sortDir;if(av>bv)return -sortDir;return 0;
+      });
+      return d;
+    }
+
+    function badge(rating){
+      var cls='r-'+rating.replace(/\s+/g,'-');
+      return '<span class="risk-badge '+cls+'">'+rating+'</span>';
+    }
+
+    function bar(val,color,max){
+      max=max||100;
+      var pct=Math.round(val/max*100);
+      return '<div class="score-cell">'
+        +'<div class="score-bar-wrap"><div class="score-bar" style="width:'+pct+'%;background:'+color+'"></div></div>'
+        +'<span class="score-num" style="color:'+color+'">'+val+'</span>'
+        +'</div>';
+    }
+
+    function mainColor(d){
+      return tab==='cc' ? getCCColor(d.prob) : getScoreColor(d.score);
+    }
+
+    function mainVal(d){ return tab==='cc' ? d.prob+'%' : d.score; }
+    function mainNum(d){ return tab==='cc' ? d.prob : d.score; }
+
+    function populateFilters(data){
+      var regions=[...new Set(data.map(function(d){return d.region;}))].sort();
+      var ratings=[...new Set(data.map(function(d){return d.rating;}))];
+      var rOrder=['Critical','Elevated','High','Moderate','Low','Very Low'];
+      ratings.sort(function(a,b){return rOrder.indexOf(a)-rOrder.indexOf(b);});
+
+      var rsel=document.getElementById('gr-region');
+      var saved_r=rsel.value;
+      rsel.innerHTML='<option value="">All regions</option>';
+      regions.forEach(function(r){rsel.innerHTML+='<option value="'+r+'"'+(r===saved_r?' selected':'')+'>'+r+'</option>';});
+
+      var tsel=document.getElementById('gr-rating');
+      var saved_t=tsel.value;
+      tsel.innerHTML='<option value="">All ratings</option>';
+      ratings.forEach(function(r){tsel.innerHTML+='<option value="'+r+'"'+(r===saved_t?' selected':'')+'>'+r+'</option>';});
+    }
+
+    function buildHead(pillars){
+      var scoreLabel = tab==='cc' ? 'P(2026)' : 'Score (0–100)';
+      var cols=[{k:'country',l:'Country'},{k:'score',l:scoreLabel},{k:'rating',l:'Rating'}];
+      Object.keys(pillars).forEach(function(k){cols.push({k:k,l:k});});
+      var thead=document.getElementById('gr-thead');
+      thead.innerHTML=cols.map(function(c){
+        var sorted=sortCol===c.k;
+        var icon=sorted?(sortDir===-1?' ↓':' ↑'):'';
+        return '<th class="'+(sorted?'sorted':'')+'" data-k="'+c.k+'">'+c.l+(icon?'<em>'+icon+'</em>':'')+'</th>';
+      }).join('');
+      thead.querySelectorAll('th').forEach(function(th){
+        th.addEventListener('click',function(){
+          var k=th.dataset.k;
+          if(k==='rating')return;
+          if(sortCol===k)sortDir*=-1;
+          else{sortCol=k;sortDir=k==='country'?1:-1;}
+          render();
+        });
+      });
+    }
+
+    function buildTable(data){
+      if(!data.length){document.getElementById('gr-tbody').innerHTML='<tr><td colspan="20" style="text-align:center;padding:2rem;color:var(--text-3);font-size:12px;">No countries match your filters.</td></tr>';return;}
+      var pillars=data[0].pillars;
+      buildHead(pillars);
+      var tbody=document.getElementById('gr-tbody');
+      tbody.innerHTML=data.map(function(d){
+        var c=mainColor(d);
+        var pcells=Object.entries(d.pillars).map(function(e){
+          return '<td>'+bar(e[1],getScoreColor(e[1]),100)+'</td>';
+        }).join('');
+        return '<tr data-idx="'+d.country+'">'
+          +'<td><div class="country-cell"><span class="c-flag">'+d.flag+'</span><span class="c-name">'+d.country+'</span><span class="region-badge">'+d.region+'</span></div></td>'
+          +'<td>'+bar(mainNum(d),c,tab==='cc'?30:100)+'</td>'
+          +'<td>'+badge(d.rating)+'</td>'
+          +pcells+'</tr>';
+      }).join('');
+      tbody.querySelectorAll('tr').forEach(function(tr){
+        tr.addEventListener('click',function(){openDrawer(tr.dataset.idx);});
+      });
+    }
+
+    function buildGrid(data){
+      var cards=document.getElementById('gr-cards');
+      if(!data.length){cards.innerHTML='<p style="font-size:12px;color:var(--text-3);">No countries match your filters.</p>';return;}
+      cards.innerHTML=data.map(function(d){
+        var c=mainColor(d);
+        var bars=Object.entries(d.pillars).map(function(e){
+          return '<div class="pillar-row">'
+            +'<span class="pillar-label">'+e[0]+'</span>'
+            +'<div class="pillar-bar-wrap"><div class="pillar-bar" style="width:'+e[1]+'%;background:'+getScoreColor(e[1])+'"></div></div>'
+            +'<span class="pillar-val">'+e[1]+'</span>'
+            +'</div>';
+        }).join('');
+        return '<div class="gr-card" data-idx="'+d.country+'">'
+          +'<div class="gr-card-top"><div><div class="gr-card-country">'+d.flag+' '+d.country+'</div><div class="gr-card-region">'+d.region+'</div></div>'
+          +'<div class="gr-card-score" style="color:'+c+'">'+mainVal(d)+'</div></div>'
+          +badge(d.rating)
+          +'<div class="gr-card-bars">'+bars+'</div>'
+          +'</div>';
+      }).join('');
+      cards.querySelectorAll('.gr-card').forEach(function(el){
+        el.addEventListener('click',function(){openDrawer(el.dataset.idx);});
+      });
+    }
+
+    function openDrawer(name){
+      var src=tab==='cc'?CC_DATA:SC_DATA;
+      var d=src.find(function(x){return x.country===name;});
+      if(!d)return;
+      var c=mainColor(d);
+      var scoreLabel=tab==='cc'?'P(Tighten 2026)':'Score (0–100)';
+      var scoreVal=tab==='cc'?d.prob+'%':d.score;
+      var pillarRows=Object.entries(d.pillars).map(function(e){
+        var pc=getScoreColor(e[1]);
+        return '<div class="dr-pillar">'
+          +'<span class="dr-pillar-name">'+e[0]+'</span>'
+          +'<div class="dr-pillar-bar-wrap"><div class="dr-pillar-bar" style="width:'+e[1]+'%;background:'+pc+'"></div></div>'
+          +'<span class="dr-pillar-val" style="color:'+pc+'">'+e[1]+'</span>'
+          +'</div>';
+      }).join('');
+      var html='<div class="dr-country">'+d.flag+' '+d.country+'</div>'
+        +'<div class="dr-region">'+d.region+' &nbsp;·&nbsp; '+badge(d.rating)+'</div>'
+        +'<div class="dr-score-row">'
+        +'<div class="dr-box"><div class="dr-box-label">'+scoreLabel+'</div><div class="dr-box-val" style="color:'+c+'">'+scoreVal+'</div></div>'
+        +'<div class="dr-box"><div class="dr-box-label">Rating</div><div style="padding-top:8px">'+badge(d.rating)+'</div></div>'
+        +'</div>'
+        +'<div class="dr-section"><div class="dr-section-title">Pillar breakdown</div>'+pillarRows+'</div>';
+      document.getElementById('dr-content').innerHTML=html;
+      document.getElementById('gr-overlay').classList.add('open');
+      document.getElementById('gr-drawer').classList.add('open');
+    }
+
+    function closeDrawer(){
+      document.getElementById('gr-overlay').classList.remove('open');
+      document.getElementById('gr-drawer').classList.remove('open');
+    }
+
+    function render(){
+      var all=tab==='cc'?CC_DATA:SC_DATA;
+      populateFilters(all);
+      var data=getData();
+      document.getElementById('gr-count').textContent=data.length+' countries';
+      document.getElementById('gr-method').innerHTML=METHODS[tab];
+      if(view==='table')buildTable(data);
+      else buildGrid(data);
+    }
+
+    document.addEventListener('DOMContentLoaded',function(){
+      document.querySelectorAll('.gr-tab').forEach(function(btn){
+        btn.addEventListener('click',function(){
+          tab=btn.dataset.tab; sortCol='score'; sortDir=-1; search=''; region=''; rating='';
+          document.getElementById('gr-search').value='';
+          document.getElementById('gr-region').value='';
+          document.getElementById('gr-rating').value='';
+          document.querySelectorAll('.gr-tab').forEach(function(b){b.classList.remove('active');});
+          btn.classList.add('active');
+          render();
+        });
+      });
+      document.getElementById('btn-table').addEventListener('click',function(){
+        view='table';
+        document.getElementById('table-view').classList.remove('hidden');
+        document.getElementById('grid-view').classList.add('hidden');
+        document.getElementById('btn-table').classList.add('active');
+        document.getElementById('btn-grid').classList.remove('active');
+        render();
+      });
+      document.getElementById('btn-grid').addEventListener('click',function(){
+        view='grid';
+        document.getElementById('table-view').classList.add('hidden');
+        document.getElementById('grid-view').classList.remove('hidden');
+        document.getElementById('btn-grid').classList.add('active');
+        document.getElementById('btn-table').classList.remove('active');
+        render();
+      });
+      document.getElementById('gr-search').addEventListener('input',function(){search=this.value.trim();render();});
+      document.getElementById('gr-region').addEventListener('change',function(){region=this.value;render();});
+      document.getElementById('gr-rating').addEventListener('change',function(){rating=this.value;render();});
+      document.getElementById('dr-close').addEventListener('click',closeDrawer);
+      document.getElementById('gr-overlay').addEventListener('click',closeDrawer);
+      render();
+    });
+  })();
+  </script>
+</body>
+</html>
