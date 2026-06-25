@@ -75,10 +75,7 @@ function renderArticles() {
 document.addEventListener('DOMContentLoaded', function() {
   var loading = document.getElementById('blog-loading');
 
-  /* Build absolute path so it works regardless of repo subfolder */
-  var pathParts = window.location.pathname.split('/');
-  var base = pathParts.length > 2 ? '/' + pathParts[1] : '';
-  fetch(base + '/assets/data/articles.json?v=' + Date.now())
+  fetch('assets/assets/data/articles.json?v=' + Date.now())
     .then(function(res) {
       if (!res.ok) throw new Error('Could not load articles (' + res.status + ')');
       return res.json();
@@ -89,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
       renderArticles();
     })
     .catch(function(err) {
-      loading.textContent = 'Could not load articles: ' + err.message;
+      loading.textContent = 'Could not load articles: ' + err.message + ' — check assets/data/articles.json exists';
       loading.className = 'chart-loading error';
     });
 
