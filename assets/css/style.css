@@ -691,3 +691,8 @@ h1 {
 }
 
 .article-body strong { font-weight: 500; }
+
+/* ── Opinion tag colours ── */
+.tag-memo    { background: #EEF0FB; color: #2D3A8C; }
+.tag-essay   { background: #F3EEF9; color: #5B2D8C; }
+.tag-article { background: #E9F7EF; color: #085041; }
