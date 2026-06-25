@@ -58,7 +58,7 @@ async function fetchFREDcsv(series) {
   /* FRED's graph CSV is publicly accessible with no API key */
   var url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=' + series;
   /* Use a lightweight CORS proxy — only needed for CSV, not JSON */
-  var proxy = 'https://corsproxy.io/?' + encodeURIComponent(url);
+  var proxy = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url);
   var res = await fetch(proxy);
   if (!res.ok) throw new Error('FRED fetch failed (' + res.status + ')');
   var text = await res.text();
