@@ -75,7 +75,10 @@ function renderArticles() {
 document.addEventListener('DOMContentLoaded', function() {
   var loading = document.getElementById('blog-loading');
 
-  fetch('assets/data/articles.json?v=' + Date.now())
+  /* Build absolute path so it works regardless of repo subfolder */
+  var pathParts = window.location.pathname.split('/');
+  var base = pathParts.length > 2 ? '/' + pathParts[1] : '';
+  fetch(base + '/assets/data/articles.json?v=' + Date.now())
     .then(function(res) {
       if (!res.ok) throw new Error('Could not load articles (' + res.status + ')');
       return res.json();
