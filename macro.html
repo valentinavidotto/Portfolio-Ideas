@@ -151,6 +151,18 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson.min.js"></script>
   <script src="assets/js/nav.js"></script>
-  <script src="assets/js/macro.js"></script>
+  <script>
+  /* Wait for all scripts then init maps */
+  function waitAndInit() {
+    if (typeof d3 === 'undefined' || typeof topojson === 'undefined') {
+      setTimeout(waitAndInit, 100);
+      return;
+    }
+    var s = document.createElement('script');
+    s.src = 'assets/js/macro.js';
+    document.body.appendChild(s);
+  }
+  waitAndInit();
+  </script>
 </body>
 </html>
