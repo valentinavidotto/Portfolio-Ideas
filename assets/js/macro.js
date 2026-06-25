@@ -1,7 +1,8 @@
-/* ── Macro dashboard ── */
+/* ── Macro dashboard — no user keys required ── */
 
-var AV_KEY_STORAGE   = 'vv_av_key';
-var FRED_KEY_STORAGE = 'vv_fred_key';
+/* ── Alpha Vantage key — hardcoded (free key, 25 req/day, read-only) ── */
+/* Replace YOUR_AV_KEY_HERE with your actual Alpha Vantage key           */
+var AV_KEY = 'YOUR_AV_KEY_HERE';
 
 function $id(id) { return document.getElementById(id); }
 
@@ -29,7 +30,7 @@ function drawChart(canvasId, loadId, labels, datasets) {
   if (!canvas) return;
   if (loader) loader.style.display = 'none';
   canvas.style.display = 'block';
-  if (canvas._chart) { canvas._chart.destroy(); }
+  if (canvas._chart) canvas._chart.destroy();
   canvas._chart = new Chart(canvas, {
     type: 'line',
     data: { labels: labels, datasets: datasets },
@@ -52,73 +53,71 @@ function drawChart(canvasId, loadId, labels, datasets) {
   });
 }
 
-/* ── FRED JSON API — uses your free key, no CORS proxy needed ── */
-async function fetchFRED(series, limit) {
-  var key = localStorage.getItem(FRED_KEY_STORAGE);
-  if (!key) throw new Error('No FRED API key — paste your key above and click Save & load');
-  limit = limit || 60;
-  var url = 'https://api.stlouisfed.org/fred/series/observations'
-    + '?series_id=' + series
-    + '&api_key=' + encodeURIComponent(key)
-    + '&file_type=json&sort_order=desc&limit=' + limit;
-  var res = await fetch(url);
-  if (!res.ok) throw new Error('FRED HTTP ' + res.status);
-  var json = await res.json();
-  if (json.error_message) throw new Error(json.error_message);
-  return (json.observations || [])
-    .filter(function(o) { return o.value !== '.' && o.value !== 'NA'; })
-    .map(function(o) { return { date: o.date, val: parseFloat(o.value) }; })
-    .filter(function(o) { return !isNaN(o.val); })
-    .reverse();
+/* ── FRED — public CSV endpoint, no key needed ── */
+async function fetchFREDcsv(series) {
+  /* FRED's graph CSV is publicly accessible with no API key */
+  var url = 'https://fred.stlouisfed.org/graph/fredgraph.csv?id=' + series;
+  /* Use a lightweight CORS proxy — only needed for CSV, not JSON */
+  var proxy = 'https://corsproxy.io/?' + encodeURIComponent(url);
+  var res = await fetch(proxy);
+  if (!res.ok) throw new Error('FRED fetch failed (' + res.status + ')');
+  var text = await res.text();
+  var rows = text.trim().split('\n').slice(1);
+  return rows.map(function(r) {
+    var p = r.split(',');
+    return { date: p[0], val: parseFloat(p[1]) };
+  }).filter(function(d) { return !isNaN(d.val); });
 }
 
 async function loadSpread() {
   $id('chart-spread') && ($id('chart-spread').style.display = 'none');
-  setLoading('load-spread', 'Fetching from FRED…', false);
+  setLoading('load-spread', 'Fetching yield curve…', false);
   try {
-    var data = await fetchFRED('T10Y2Y', 60);
-    var latest = data[data.length - 1], prev = data[data.length - 2];
+    var data = await fetchFREDcsv('T10Y2Y');
+    var recent = data.slice(-60);
+    var latest = recent[recent.length - 1], prev = recent[recent.length - 2];
     setStatValue('val-spread', 'delta-spread', latest.val, prev ? prev.val : null,
       function(v) { return v.toFixed(2) + '%'; });
     var upd = $id('last-updated');
-    if (upd) upd.textContent = 'Last updated ' + latest.date;
+    if (upd) upd.textContent = 'Updated ' + latest.date;
     drawChart('chart-spread', 'load-spread',
-      data.map(function(d) { return d.date; }),
-      [{ data: data.map(function(d) { return d.val; }),
+      recent.map(function(d) { return d.date; }),
+      [{ data: recent.map(function(d) { return d.val; }),
          borderColor: '#185FA5', borderWidth: 1.5, pointRadius: 0, fill: false, tension: 0.3 }]);
-  } catch(e) { setLoading('load-spread', e.message, true); }
+  } catch(e) { setLoading('load-spread', 'Could not load: ' + e.message, true); }
 }
 
 async function loadCPI() {
   $id('chart-cpi') && ($id('chart-cpi').style.display = 'none');
-  setLoading('load-cpi', 'Fetching from FRED…', false);
+  setLoading('load-cpi', 'Fetching CPI…', false);
   try {
-    var data = await fetchFRED('CPIAUCSL', 48);
-    var latest = data[data.length - 1], yearAgo = data[Math.max(0, data.length - 13)];
-    var prev = data[data.length - 2], prevYA = data[Math.max(0, data.length - 14)];
+    var data = await fetchFREDcsv('CPIAUCSL');
+    var recent = data.slice(-36);
+    var latest = recent[recent.length - 1], yearAgo = recent[Math.max(0, recent.length - 13)];
+    var prev = recent[recent.length - 2], prevYA = recent[Math.max(0, recent.length - 14)];
     var yoy = ((latest.val / yearAgo.val) - 1) * 100;
     var prevYoy = prev && prevYA ? ((prev.val / prevYA.val) - 1) * 100 : null;
     setStatValue('val-cpi', 'delta-cpi', yoy, prevYoy,
       function(v) { return v.toFixed(1) + '%'; });
     drawChart('chart-cpi', 'load-cpi',
-      data.map(function(d) { return d.date; }),
-      [{ data: data.map(function(d) { return d.val; }),
+      recent.map(function(d) { return d.date; }),
+      [{ data: recent.map(function(d) { return d.val; }),
          borderColor: '#639922', borderWidth: 1.5, pointRadius: 0, fill: false, tension: 0.3 }]);
-  } catch(e) { setLoading('load-cpi', e.message, true); }
+  } catch(e) { setLoading('load-cpi', 'Could not load: ' + e.message, true); }
 }
 
 /* ── Alpha Vantage — Brent ── */
-async function loadBrent(key) {
+async function loadBrent() {
   $id('chart-brent') && ($id('chart-brent').style.display = 'none');
-  setLoading('load-brent', 'Fetching Brent data…', false);
+  setLoading('load-brent', 'Fetching Brent crude…', false);
   try {
-    var url = 'https://www.alphavantage.co/query?function=BRENT&interval=monthly&apikey=' + encodeURIComponent(key);
+    var url = 'https://www.alphavantage.co/query?function=BRENT&interval=monthly&apikey=' + AV_KEY;
     var res = await fetch(url);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var json = await res.json();
-    if (json.Information) throw new Error('API limit reached — try again tomorrow');
+    if (json.Information) throw new Error('Daily limit reached — data will refresh tomorrow');
     var series = json.data;
-    if (!series || !series.length) throw new Error('No data returned — check your API key');
+    if (!series || !series.length) throw new Error('No data returned');
     var data = series.slice(0, 24).reverse()
       .map(function(d) { return { date: d.date, val: parseFloat(d.value) }; })
       .filter(function(d) { return !isNaN(d.val); });
@@ -129,8 +128,7 @@ async function loadBrent(key) {
       data.map(function(d) { return d.date; }),
       [{ data: data.map(function(d) { return d.val; }),
          borderColor: '#BA7517', borderWidth: 1.5, pointRadius: 0, fill: false, tension: 0.3 }]);
-    localStorage.setItem(AV_KEY_STORAGE, key);
-  } catch(e) { setLoading('load-brent', 'Error: ' + e.message, true); }
+  } catch(e) { setLoading('load-brent', e.message, true); }
 }
 
 /* ── World Bank choropleth maps ── */
@@ -199,7 +197,6 @@ async function fetchWorldBank(indicator) {
   return map;
 }
 
-/* Wait for a global variable to be defined (handles async script loading) */
 function waitForLib(name, cb, tries) {
   tries = tries || 0;
   if (window[name]) { cb(); return; }
@@ -213,34 +210,26 @@ async function drawMap(containerId, loadId, indicatorKey, unit) {
     var colorFn = buildColorScale(COLOR_SCALES[indicatorKey]);
     var world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2.0.2/countries-110m.json')
       .then(function(r) { return r.json(); });
-
-    /* Wait for topojson and d3 to be available */
     await new Promise(function(resolve, reject) {
       waitForLib('topojson', function(err) { err ? reject(err) : resolve(); });
     });
-
     var countries = topojson.feature(world, world.objects.countries);
     var container = $id(containerId), loader = $id(loadId);
     if (!container) return;
     loader.style.display = 'none';
     container.style.display = 'block';
-
     var w = container.parentElement.getBoundingClientRect().width || 340;
     var h = Math.round(w * 0.52);
-
     var svg = d3.select(container).append('svg')
       .attr('viewBox', '0 0 ' + w + ' ' + h)
       .style('width', '100%').style('height', 'auto');
-
     var proj = d3.geoNaturalEarth1().scale(w / 6.3).translate([w / 2, h / 2]);
     var path = d3.geoPath().projection(proj);
-
     d3.select(container).style('position', 'relative');
     var tip = d3.select(container).append('div')
       .style('position','absolute').style('background','#1a1a1a').style('color','#fff')
       .style('font-size','11px').style('padding','4px 8px').style('border-radius','4px')
       .style('pointer-events','none').style('display','none').style('white-space','nowrap');
-
     svg.append('g').selectAll('path').data(countries.features).join('path')
       .attr('d', path)
       .attr('fill', function(f) {
@@ -257,8 +246,6 @@ async function drawMap(containerId, loadId, indicatorKey, unit) {
            .text(iso3 ? iso3 + ': ' + (val != null ? val.toFixed(1) + unit : 'N/A') : 'N/A');
       })
       .on('mouseleave', function() { tip.style('display', 'none'); });
-
-    /* Legend */
     var cfg = COLOR_SCALES[indicatorKey];
     var leg = document.createElement('div'); leg.className = 'map-legend';
     var bar = document.createElement('div'); bar.className = 'legend-bar';
@@ -268,42 +255,14 @@ async function drawMap(containerId, loadId, indicatorKey, unit) {
     var hi = document.createElement('span'); hi.className = 'legend-label'; hi.textContent = '≥' + cfg.domain[cfg.domain.length-1] + unit;
     leg.appendChild(lo); leg.appendChild(bar); leg.appendChild(hi);
     container.appendChild(leg);
-
   } catch(e) { setLoading(loadId, 'Map error: ' + e.message, true); }
 }
 
-/* ── Boot ── */
+/* ── Boot — everything loads automatically ── */
 document.addEventListener('DOMContentLoaded', function() {
-  /* FRED key */
-  var fredInput = $id('fred-key'), fredBtn = $id('fred-save');
-  var savedFred = localStorage.getItem(FRED_KEY_STORAGE);
-  if (savedFred && fredInput) fredInput.value = savedFred;
-  if (fredBtn) {
-    fredBtn.addEventListener('click', function() {
-      var k = fredInput ? fredInput.value.trim() : '';
-      if (k) { localStorage.setItem(FRED_KEY_STORAGE, k); loadSpread(); loadCPI(); }
-    });
-  }
-
-  /* AV key */
-  var avInput = $id('av-key'), avBtn = $id('av-save');
-  var savedAV = localStorage.getItem(AV_KEY_STORAGE);
-  if (savedAV && avInput) { avInput.value = savedAV; loadBrent(savedAV); }
-  if (avBtn) {
-    avBtn.addEventListener('click', function() {
-      var k = avInput ? avInput.value.trim() : '';
-      if (k) loadBrent(k);
-    });
-  }
-
-  /* Load FRED charts if key already saved */
-  if (savedFred) { loadSpread(); loadCPI(); }
-  else {
-    setLoading('load-spread', 'Paste your FRED API key above and click Save & load.', false);
-    setLoading('load-cpi',    'Paste your FRED API key above and click Save & load.', false);
-  }
-
-  /* Maps load automatically — World Bank API supports CORS natively */
+  loadSpread();
+  loadCPI();
+  loadBrent();
   drawMap('map-inflation',    'load-inf-map',   'inflation',    '%');
   drawMap('map-gdp',          'load-gdp-map',   'gdp',          '%');
   drawMap('map-unemployment', 'load-unemp-map', 'unemployment', '%');
