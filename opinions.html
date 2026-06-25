@@ -18,7 +18,7 @@
     </button>
     <div class="nav-links" id="nav-links">
       <a href="macro.html">Macro Dashboard</a>
-       <a href="research/geopolitical-risk.html">Geopolitical Risk</a>
+      <a href="research/geopolitical-risk.html">Geopolitical Risk</a>
       <a href="opinions.html" class="active">Opinions</a>
       <a href="projects.html">Projects</a>
     </div>
@@ -27,54 +27,26 @@
   <main class="main">
     <div class="page-header">
       <h1 class="page-title">Opinions</h1>
-      <p class="page-sub">Analysis and views on the market and global policy trends.
+      <p class="page-sub">Memos, essays, and articles on policy, markets, and global trends.</p>
+    </div>
 
     <div class="filter-row">
       <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="policy">Policy</button>
-      <button class="filter-btn" data-filter="market">Market</button>
-      <button class="filter-btn" data-filter="ideas">Ideas</button>
+      <button class="filter-btn" data-filter="memo">Memos</button>
+      <button class="filter-btn" data-filter="essay">Essays</button>
+      <button class="filter-btn" data-filter="article">Articles</button>
     </div>
 
-    <div class="blog-list" id="blog-list">
-
-      <article class="blog-item" 
-        <div class="blog-main">
-          <h2 class="blog-title">In defence, countries with mature VC ecosystems will outcompete those without</h2>
-          <p class="blog-excerpt">As defence becomes a central geopolitical priority, venture capital is emerging as a strategic national asset for turning military spending into innovation.</p>
-          <div class="blog-meta">
-            <span class="blog-date">June 2026</span>
-            <span class="blog-venue">Substack</span>
-          </div>
-        </div>
-        <a class="blog-arrow" href="https://thecurrencyofchange.substack.com/p/in-defence-countries-with-mature-ca1" target="_blank" rel="noopener" aria-label="Read article">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-        </a>
-      </article>
-
-      <article class="blog-item" data-tag="market">
-        <div class="blog-main">
-          <h2 class="blog-title">Oil, rates and gold: how global markets are pricing in 20 days of war on Iran</h2>
-          <p class="blog-excerpt">Markets reprice war risk as energy disruption collides with higher-for-longer interest rates.</p>
-          <div class="blog-meta">
-            <span class="blog-date">2024</span>
-            <span class="blog-venue">The Currency of Change</span>
-          </div>
-        </div>
-        <a class="blog-arrow" href="https://thecurrencyofchange.substack.com/p/oil-rates-and-gold-how-global-markets" target="_blank" rel="noopener" aria-label="Read article">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M17 7H7M17 7v10"/></svg>
-        </a>
-      </article>
-
-
-    </div>
+    <div id="blog-loading" class="chart-loading" style="padding:1rem 0;">Loading…</div>
+    <div class="blog-list" id="blog-list" style="display:none"></div>
+    <p id="blog-empty" style="display:none;font-size:13px;color:var(--text-3);padding:1rem 0;">No pieces in this category yet.</p>
   </main>
 
   <footer class="footer">
     <span>© 2026 Valentina Vidotto</span>
     <div class="footer-links">
       <a href="https://thecurrencyofchange.substack.com/" target="_blank" rel="noopener">Substack</a>
-      <a href="https://www.linkedin.com/in/valentina-vidotto/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.linkedin.com/in/valentina-vidotto" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </footer>
 
