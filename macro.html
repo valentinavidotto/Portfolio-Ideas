@@ -17,11 +17,11 @@
       transition: background 0.15s, border-color 0.15s;
     }
     .link-card:hover { background: var(--bg-2); border-color: var(--border-2); }
+    .link-card-left { display: flex; flex-direction: column; gap: 3px; }
     .link-card-label { font-size: 13px; font-weight: 500; }
-    .link-card-source { font-size: 11px; color: var(--text-3); margin-top: 2px; }
-    .link-card-arrow { color: var(--text-3); font-size: 16px; }
-    .link-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-    .link-grid.wide { grid-template-columns: 1fr; }
+    .link-card-source { font-size: 11px; color: var(--text-3); }
+    .link-card-arrow { color: var(--text-3); font-size: 16px; flex-shrink: 0; }
+    .link-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     @media (max-width: 600px) { .link-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -46,98 +46,71 @@
       <p class="page-sub">Reference macro dataset for market view.</p>
     </div>
 
-    <div class="stat-grid" style="margin-bottom:1.5rem">
-      <div class="stat-card">
-        <div class="stat-label">Brent crude</div>
-        <div class="stat-value" id="val-brent">—</div>
-        <div class="stat-delta" id="delta-brent"></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">10Y–2Y spread</div>
-        <div class="stat-value">
-          <a href="https://fred.stlouisfed.org/series/T10Y2Y" target="_blank" rel="noopener"
-             style="font-size:13px;font-weight:500;color:var(--blue);text-decoration:none;">View on FRED ↗</a>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-label">US CPI</div>
-        <div class="stat-value">
-          <a href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank" rel="noopener"
-             style="font-size:13px;font-weight:500;color:var(--blue);text-decoration:none;">View on FRED ↗</a>
-        </div>
-      </div>
-    </div>
-
-    <p class="section-label" style="margin-bottom:0.75rem">Charts &amp; data</p>
-    <div class="link-grid">
+    <p class="section-label" style="margin-bottom:0.75rem">Rates &amp; prices</p>
+    <div class="link-grid" style="margin-bottom:1.5rem">
       <a class="link-card" href="https://fred.stlouisfed.org/series/T10Y2Y" target="_blank" rel="noopener">
-        <div>
-          <div class="link-card-label">10Y–2Y Yield Spread</div>
-          <div class="link-card-source">FRED — Federal Reserve</div>
+        <div class="link-card-left">
+          <span class="link-card-label">10Y–2Y Yield Spread</span>
+          <span class="link-card-source">FRED — Federal Reserve</span>
         </div>
         <span class="link-card-arrow">↗</span>
       </a>
       <a class="link-card" href="https://fred.stlouisfed.org/series/CPIAUCSL" target="_blank" rel="noopener">
-        <div>
-          <div class="link-card-label">US CPI</div>
-          <div class="link-card-source">FRED — Federal Reserve</div>
+        <div class="link-card-left">
+          <span class="link-card-label">US CPI</span>
+          <span class="link-card-source">FRED — Federal Reserve</span>
         </div>
         <span class="link-card-arrow">↗</span>
       </a>
       <a class="link-card" href="https://tradingeconomics.com/commodity/brent-crude-oil" target="_blank" rel="noopener">
-        <div>
-          <div class="link-card-label">Brent Crude Oil</div>
-          <div class="link-card-source">Trading Economics</div>
+        <div class="link-card-left">
+          <span class="link-card-label">Brent Crude Oil</span>
+          <span class="link-card-source">Trading Economics</span>
         </div>
         <span class="link-card-arrow">↗</span>
       </a>
       <a class="link-card" href="https://tradingeconomics.com/united-states/consumer-price-index-cpi" target="_blank" rel="noopener">
-        <div>
-          <div class="link-card-label">US CPI Detail</div>
-          <div class="link-card-source">Trading Economics</div>
+        <div class="link-card-left">
+          <span class="link-card-label">US CPI Detail</span>
+          <span class="link-card-source">Trading Economics</span>
         </div>
         <span class="link-card-arrow">↗</span>
       </a>
     </div>
 
-    <div class="dashboard">
-
-      <div class="chart-card map-card">
-        <div class="chart-head">
-          <span class="chart-title">Inflation — world map</span>
-          <span class="source-badge api">World Bank</span>
+    <p class="section-label" style="margin-bottom:0.75rem">World maps</p>
+    <div class="link-grid" style="margin-bottom:2rem">
+      <a class="link-card" href="https://www.tradingview.com/macro-maps/?map=inflation" target="_blank" rel="noopener">
+        <div class="link-card-left">
+          <span class="link-card-label">Inflation — world map</span>
+          <span class="link-card-source">TradingView Macro Maps</span>
         </div>
-        <div class="chart-body map-body">
-          <div class="chart-loading" id="load-inf-map">Building map…</div>
-          <div id="map-inflation" style="display:none"></div>
+        <span class="link-card-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.tradingview.com/macro-maps/?map=gdp" target="_blank" rel="noopener">
+        <div class="link-card-left">
+          <span class="link-card-label">GDP growth — world map</span>
+          <span class="link-card-source">TradingView Macro Maps</span>
         </div>
-      </div>
-
-      <div class="chart-card map-card">
-        <div class="chart-head">
-          <span class="chart-title">GDP growth — world map</span>
-          <span class="source-badge api">World Bank</span>
+        <span class="link-card-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.tradingview.com/macro-maps/?map=unemployment" target="_blank" rel="noopener">
+        <div class="link-card-left">
+          <span class="link-card-label">Unemployment — world map</span>
+          <span class="link-card-source">TradingView Macro Maps</span>
         </div>
-        <div class="chart-body map-body">
-          <div class="chart-loading" id="load-gdp-map">Building map…</div>
-          <div id="map-gdp" style="display:none"></div>
+        <span class="link-card-arrow">↗</span>
+      </a>
+      <a class="link-card" href="https://www.tradingview.com/macro-maps/" target="_blank" rel="noopener">
+        <div class="link-card-left">
+          <span class="link-card-label">All macro maps</span>
+          <span class="link-card-source">TradingView Macro Maps</span>
         </div>
-      </div>
-
-      <div class="chart-card map-card span2">
-        <div class="chart-head">
-          <span class="chart-title">Unemployment — world map</span>
-          <span class="source-badge api">World Bank</span>
-        </div>
-        <div class="chart-body map-body">
-          <div class="chart-loading" id="load-unemp-map">Building map…</div>
-          <div id="map-unemployment" style="display:none"></div>
-        </div>
-      </div>
-
+        <span class="link-card-arrow">↗</span>
+      </a>
     </div>
 
-    <p class="data-note" style="margin-top:1rem">Data: <a href="https://fred.stlouisfed.org" target="_blank" rel="noopener">FRED</a>, <a href="https://www.alphavantage.co" target="_blank" rel="noopener">Alpha Vantage</a>, <a href="https://data.worldbank.org" target="_blank" rel="noopener">World Bank</a>, <a href="https://tradingeconomics.com" target="_blank" rel="noopener">Trading Economics</a>.</p>
+    <p class="data-note">Data: <a href="https://fred.stlouisfed.org" target="_blank" rel="noopener">FRED</a>, <a href="https://tradingeconomics.com" target="_blank" rel="noopener">Trading Economics</a>, <a href="https://www.tradingview.com" target="_blank" rel="noopener">TradingView</a>.</p>
   </main>
 
   <footer class="footer">
@@ -148,21 +121,6 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3.1.0/dist/topojson.min.js"></script>
   <script src="assets/js/nav.js"></script>
-  <script>
-  /* Wait for all scripts then init maps */
-  function waitAndInit() {
-    if (typeof d3 === 'undefined' || typeof topojson === 'undefined') {
-      setTimeout(waitAndInit, 100);
-      return;
-    }
-    var s = document.createElement('script');
-    s.src = 'assets/js/macro.js';
-    document.body.appendChild(s);
-  }
-  waitAndInit();
-  </script>
 </body>
 </html>
